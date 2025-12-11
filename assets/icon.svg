@@ -1,0 +1,58 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle for better visibility -->
+  <circle cx="512" cy="512" r="480" fill="#4A90E2" opacity="0.1"/>
+
+  <!-- Notepad -->
+  <rect x="250" y="200" width="450" height="550" rx="20" fill="#FFFFFF" stroke="#2C3E50" stroke-width="8"/>
+
+  <!-- Notepad spiral binding holes -->
+  <circle cx="300" cy="240" r="15" fill="#E74C3C"/>
+  <circle cx="400" cy="240" r="15" fill="#E74C3C"/>
+  <circle cx="500" cy="240" r="15" fill="#E74C3C"/>
+  <circle cx="600" cy="240" r="15" fill="#E74C3C"/>
+  <circle cx="650" cy="240" r="15" fill="#E74C3C"/>
+
+  <!-- Notepad lines -->
+  <line x1="300" y1="320" x2="620" y2="320" stroke="#BDC3C7" stroke-width="6" stroke-linecap="round"/>
+  <line x1="300" y1="380" x2="620" y2="380" stroke="#BDC3C7" stroke-width="6" stroke-linecap="round"/>
+  <line x1="300" y1="440" x2="620" y2="440" stroke="#BDC3C7" stroke-width="6" stroke-linecap="round"/>
+  <line x1="300" y1="500" x2="620" y2="500" stroke="#BDC3C7" stroke-width="6" stroke-linecap="round"/>
+  <line x1="300" y1="560" x2="500" y2="560" stroke="#BDC3C7" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Apple (positioned on top right of notepad) -->
+  <g transform="translate(580, 480)">
+    <!-- Apple body -->
+    <ellipse cx="0" cy="20" rx="80" ry="90" fill="#E74C3C"/>
+    <ellipse cx="0" cy="20" rx="70" ry="80" fill="#C0392B"/>
+    <!-- Apple indent (top) -->
+    <path d="M -20 -50 Q 0 -30 20 -50" fill="#E74C3C"/>
+    <!-- Apple leaf -->
+    <ellipse cx="15" cy="-55" rx="25" ry="12" fill="#27AE60" transform="rotate(30 15 -55)"/>
+    <!-- Apple stem -->
+    <rect x="-5" y="-70" width="10" height="25" rx="5" fill="#8B4513"/>
+    <!-- Apple highlight -->
+    <ellipse cx="-25" cy="0" rx="20" ry="30" fill="#FFFFFF" opacity="0.3"/>
+  </g>
+
+  <!-- Pencil (diagonal across notepad) -->
+  <g transform="translate(512, 512) rotate(-45)">
+    <!-- Pencil body (wood) -->
+    <rect x="-200" y="-25" width="350" height="50" fill="#F39C12" stroke="#E67E22" stroke-width="3"/>
+
+    <!-- Pencil stripe -->
+    <rect x="-200" y="-25" width="350" height="15" fill="#E67E22"/>
+    <rect x="-200" y="10" width="350" height="15" fill="#E67E22"/>
+
+    <!-- Pencil tip (graphite) -->
+    <polygon points="150,-25 150,25 220,0" fill="#34495E"/>
+
+    <!-- Pencil tip (wood part) -->
+    <polygon points="150,-25 150,25 180,-12.5 180,12.5" fill="#D68910"/>
+
+    <!-- Eraser -->
+    <rect x="-220" y="-25" width="20" height="50" fill="#E91E63" rx="3"/>
+
+    <!-- Metal band -->
+    <rect x="-205" y="-25" width="8" height="50" fill="#95A5A6"/>
+  </g>
+</svg>
