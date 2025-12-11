@@ -6,7 +6,47 @@ on:
       - 'v*.*.*'  # Triggers on version tags like v0.1.0, v1.0.0, etc.
 
 jobs:
+  # Create GitHub Release first (runs once)
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Student Accommodation Tracker ${{ github.ref_name }}
+          body: |
+            ## 🎉 What's New in ${{ github.ref_name }}
+
+            ### Installation
+
+            **macOS:**
+            - Download `Student Accommodation Tracker-${{ github.ref_name }}-arm64.dmg`
+            - Open the DMG and drag to Applications
+            - Right-click → Open (first time only)
+
+            **Windows:**
+            - Download `Student Accommodation Tracker Setup ${{ github.ref_name }}.exe`
+            - Run the installer
+            - Click "More info" → "Run anyway" if SmartScreen appears
+
+            ### Auto-Updates
+            If you already have the app installed, it will automatically notify you of this update!
+
+            ---
+
+            📝 **Full Changelog:** https://github.com/blakejoy/student-accomodation-tracker/compare/${{ github.ref_name }}
+          draft: false
+          prerelease: false
+
+  # Build and upload installers (runs on both platforms)
   release:
+    needs: create-release
     runs-on: ${{ matrix.os }}
 
     strategy:
