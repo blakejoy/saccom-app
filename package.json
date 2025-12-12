@@ -18,7 +18,7 @@
     "db:push": "drizzle-kit push",
     "db:seed": "tsx src/lib/db/seed.ts",
     "icons:generate": "node scripts/generate-icons.js",
-    "electron:rebuild": "electron-rebuild -f -w better-sqlite3",
+    "electron:rebuild": "electron-rebuild -f -w better-sqlite3 -v 39.2.6",
     "electron:dev": "concurrently \"cross-env NODE_ENV=development next dev\" \"wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .\"",
     "electron:build": "next build && electron-builder",
     "electron:build:mac": "next build && electron-builder --mac",

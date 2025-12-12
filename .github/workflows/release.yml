@@ -69,7 +69,12 @@ jobs:
         run: npm ci
 
       - name: Rebuild native modules for Electron
-        run: npm run electron:rebuild
+        run: |
+          echo "Node version: $(node --version)"
+          echo "Electron version: $(npm list electron --depth=0)"
+          npm run electron:rebuild
+          echo "Rebuild complete - verifying binary..."
+          ls -la node_modules/better-sqlite3/build/Release/ || echo "Build directory not found"
 
       - name: Build app (macOS)
         if: matrix.os == 'macos-latest'
