@@ -68,7 +68,7 @@
   },
   "build": {
     "appId": "com.studentformapp",
-    "productName": "Student Accommodation Tracker",
+    "productName": "student-accommodation-tracker",
     "files": [
       "electron/**/*",
       ".next/**/*",
