@@ -7,7 +7,7 @@
   "main": "electron/main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/blakejoy/student-accomodation-tracker.git"
+    "url": "https://github.com/blakejoy/saccom-app.git"
   },
   "scripts": {
     "dev": "next dev --inspect",
@@ -95,7 +95,7 @@
     "publish": {
       "provider": "github",
       "owner": "blakejoy",
-      "repo": "student-accomodation-tracker"
+      "repo": "saccom-app"
     },
     "mac": {
       "target": [

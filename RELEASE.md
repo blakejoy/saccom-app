@@ -88,10 +88,10 @@ git add .
 git commit -m "Initial commit"
 
 # Create the repository on GitHub at:
-# https://github.com/blakejoy/student-accomodation-tracker
+# https://github.com/blakejoy/saccom-app
 
 # Add remote and push
-git remote add origin https://github.com/blakejoy/student-accomodation-tracker.git
+git remote add origin https://github.com/blakejoy/saccom-app.git
 git branch -M main
 git push -u origin main
 ```

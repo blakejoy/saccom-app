@@ -43,7 +43,7 @@ jobs:
 
             ---
 
-            📝 **Full Changelog:** https://github.com/blakejoy/student-accomodation-tracker/compare/${{ github.ref_name }}
+            📝 **Full Changelog:** https://github.com/blakejoy/saccom-app/compare/${{ github.ref_name }}
           draft: false
           prerelease: false
 

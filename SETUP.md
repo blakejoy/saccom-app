@@ -39,7 +39,7 @@ For completely private releases (requires GitHub token):
    autoUpdater.setFeedURL({
      provider: 'github',
      owner: 'blakejoy',
-     repo: 'student-accomodation-tracker',
+     repo: 'saccom-app',
      private: true,
      token: 'ghp_your_token_here' // Your GitHub token
    });
