@@ -26,7 +26,7 @@ export async function initializeDatabase() {
 
       // Determine migrations folder path (different in dev vs production)
       const migrationsFolder = process.env.NODE_ENV === 'production'
-        ? path.join(process.resourcesPath, 'drizzle')
+        ? path.join((process as any).resourcesPath, 'drizzle')
         : path.join(process.cwd(), 'drizzle')
 
       // Only run migrations if the folder exists
@@ -49,7 +49,7 @@ export async function initializeDatabase() {
 
       // Optionally run migrations to update schema on app updates
       const migrationsFolder = process.env.NODE_ENV === 'production'
-        ? path.join(process.resourcesPath, 'drizzle')
+        ? path.join((process as any).resourcesPath, 'drizzle')
         : path.join(process.cwd(), 'drizzle')
 
       if (fs.existsSync(migrationsFolder)) {
