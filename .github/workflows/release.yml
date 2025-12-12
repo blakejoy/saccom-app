@@ -68,10 +68,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Rebuild better-sqlite3 (macOS only)
-        if: matrix.os == 'macos-latest'
-        run: npm rebuild better-sqlite3
-
       - name: Build app (macOS)
         if: matrix.os == 'macos-latest'
         env:

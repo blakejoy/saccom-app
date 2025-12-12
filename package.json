@@ -87,8 +87,6 @@
     "asarUnpack": [
       "node_modules/better-sqlite3/**/*"
     ],
-    "npmRebuild": false,
-    "buildDependenciesFromSource": false,
     "directories": {
       "buildResources": "assets"
     },
