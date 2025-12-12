@@ -18,6 +18,7 @@
     "db:push": "drizzle-kit push",
     "db:seed": "tsx src/lib/db/seed.ts",
     "icons:generate": "node scripts/generate-icons.js",
+    "electron:rebuild": "electron-rebuild -f -w better-sqlite3",
     "electron:dev": "concurrently \"cross-env NODE_ENV=development next dev\" \"wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .\"",
     "electron:build": "next build && electron-builder",
     "electron:build:mac": "next build && electron-builder --mac",
@@ -25,14 +26,14 @@
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.2.0",
-    "better-sqlite3": "^11.7.0",
+    "better-sqlite3": "^12.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.36.4",
     "electron-updater": "^6.6.2",
     "lucide-react": "^0.468.0",
-    "next": "16.0.6",
+    "next": "16.0.10",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "tailwind-merge": "^2.6.0",
@@ -40,6 +41,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@electron/rebuild": "^4.0.2",
     "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.2",
     "@types/react": "19.2.7",
@@ -48,7 +50,7 @@
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "drizzle-kit": "^0.30.0",
-    "electron": "^33.2.1",
+    "electron": "^39.2.6",
     "electron-builder": "^26.0.12",
     "eslint": "^9.17.0",
     "eslint-config-next": "16.0.6",
@@ -87,6 +89,7 @@
     "asarUnpack": [
       "node_modules/better-sqlite3/**/*"
     ],
+    "npmRebuild": false,
     "directories": {
       "buildResources": "assets"
     },
