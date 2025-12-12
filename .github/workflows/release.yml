@@ -42,7 +42,6 @@ jobs:
             If you already have the app installed, it will automatically notify you of this update!
 
             ---
-
             📝 **Full Changelog:** https://github.com/blakejoy/saccom-app/compare/${{ github.ref_name }}
           draft: false
           prerelease: false
