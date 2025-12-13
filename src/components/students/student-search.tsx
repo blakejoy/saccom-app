@@ -1,28 +1,22 @@
-'use client'
-
-import { useState, useTransition } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Input } from '@/components/ui/input'
 
 export function StudentSearch() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [isPending, startTransition] = useTransition()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState(searchParams.get('search') || '')
 
   const handleSearch = (value: string) => {
     setSearch(value)
 
-    startTransition(() => {
-      const params = new URLSearchParams(searchParams.toString())
-      if (value) {
-        params.set('search', value)
-      } else {
-        params.delete('search')
-      }
+    const params = new URLSearchParams(searchParams.toString())
+    if (value) {
+      params.set('search', value)
+    } else {
+      params.delete('search')
+    }
 
-      router.push(`/?${params.toString()}`)
-    })
+    setSearchParams(params)
   }
 
   return (
@@ -32,7 +26,6 @@ export function StudentSearch() {
         placeholder="Search by student number or initials..."
         value={search}
         onChange={(e) => handleSearch(e.target.value)}
-        className={isPending ? 'opacity-50' : ''}
       />
     </div>
   )

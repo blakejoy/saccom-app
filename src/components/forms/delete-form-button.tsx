@@ -1,7 +1,6 @@
-'use client'
-
-import { useState, useTransition } from 'react'
-import { deleteForm } from '@/lib/actions/forms'
+import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 
 interface DeleteFormButtonProps {
@@ -11,12 +10,23 @@ interface DeleteFormButtonProps {
 
 export function DeleteFormButton({ formId, studentId }: DeleteFormButtonProps) {
   const [showConfirm, setShowConfirm] = useState(false)
-  const [isPending, startTransition] = useTransition()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      window.electronAPI.forms.delete({ id: formId, studentId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['student', studentId] })
+      navigate(`/students/${studentId}`)
+    },
+    onError: (error) => {
+      alert(`Failed to delete form: ${error.message}`)
+    },
+  })
 
   const handleDelete = () => {
-    startTransition(async () => {
-      await deleteForm(formId, studentId)
-    })
+    mutation.mutate()
   }
 
   if (showConfirm) {
@@ -29,17 +39,17 @@ export function DeleteFormButton({ formId, studentId }: DeleteFormButtonProps) {
             variant="destructive"
             size="sm"
             onClick={handleDelete}
-            disabled={isPending}
+            disabled={mutation.isPending}
             className="flex-1"
           >
-            {isPending ? 'Deleting...' : 'Yes, Delete'}
+            {mutation.isPending ? 'Deleting...' : 'Yes, Delete'}
           </Button>
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={() => setShowConfirm(false)}
-            disabled={isPending}
+            disabled={mutation.isPending}
             className="flex-1"
           >
             Cancel

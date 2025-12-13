@@ -1,7 +1,6 @@
-'use client'
-
-import { useState, useTransition } from 'react'
-import { createFormWithAccommodations } from '@/lib/actions/forms'
+import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -25,7 +24,9 @@ export function FormCreationForm({
   accommodations,
   templates,
 }: FormCreationFormProps) {
-  const [isPending, startTransition] = useTransition()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
   const [weekNumber, setWeekNumber] = useState(getCurrentWeekNumber())
   const [year, setYear] = useState(getCurrentYear())
   const [isSas, setIsSas] = useState(false)
@@ -41,6 +42,24 @@ export function FormCreationForm({
   const filteredAccommodations = accommodations.filter((acc) =>
     acc.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+  const mutation = useMutation({
+    mutationFn: (data: {
+      studentId: number
+      weekNumber: number
+      year: number
+      startDate: string
+      isSas: boolean
+      accommodationIds?: number[]
+    }) => window.electronAPI.forms.create(data),
+    onSuccess: (form) => {
+      queryClient.invalidateQueries({ queryKey: ['student', studentId] })
+      navigate(`/students/${studentId}/forms/${form.id}`)
+    },
+    onError: (error) => {
+      alert(`Failed to create form: ${error.message}`)
+    },
+  })
 
   const handleToggleAccommodation = (id: number) => {
     setSelectedAccommodations((prev) =>
@@ -64,15 +83,13 @@ export function FormCreationForm({
       return
     }
 
-    startTransition(async () => {
-      await createFormWithAccommodations({
-        studentId,
-        weekNumber,
-        year,
-        startDate,
-        isSas,
-        accommodationIds: isSas ? [] : selectedAccommodations,
-      })
+    mutation.mutate({
+      studentId,
+      weekNumber,
+      year,
+      startDate,
+      isSas,
+      accommodationIds: isSas ? [] : selectedAccommodations,
     })
   }
 
@@ -220,15 +237,16 @@ export function FormCreationForm({
         <Button
           type="submit"
           className="flex-1 min-h-[44px]"
-          disabled={isPending || (!isSas && selectedAccommodations.length === 0)}
+          disabled={mutation.isPending || (!isSas && selectedAccommodations.length === 0)}
         >
-          {isPending ? 'Creating...' : 'Create Form'}
+          {mutation.isPending ? 'Creating...' : 'Create Form'}
         </Button>
         <Button
           type="button"
           variant="outline"
           className="flex-1 min-h-[44px]"
-          disabled={isPending}
+          disabled={mutation.isPending}
+          onClick={() => navigate(`/students/${studentId}`)}
         >
           Cancel
         </Button>

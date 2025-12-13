@@ -1,5 +1,40 @@
 # Setup Guide
 
+## Tech Stack
+
+This app uses a modern Electron + Vite architecture:
+
+### Frontend (Renderer Process)
+- **Vite** - Fast build tool and dev server (replaces Next.js)
+- **React 19** - UI framework
+- **React Router** - Client-side routing (HashRouter for Electron)
+- **TanStack Query** - Data fetching and caching
+- **Tailwind CSS** - Styling
+- **TypeScript** - Type safety
+
+### Backend (Main Process)
+- **Electron** - Desktop app framework
+- **SQLite** (better-sqlite3) - Local database
+- **Drizzle ORM** - Type-safe database queries
+- **Electron IPC** - Communication between renderer and main process
+
+### Key Differences from Next.js:
+- ✅ **Faster dev server** - Vite HMR vs Next.js
+- ✅ **Type-safe IPC** - Database runs in main process, not renderer
+- ✅ **No Server Actions** - Direct IPC calls instead
+- ✅ **HashRouter** - Required for Electron's file:// protocol
+- ✅ **PDF Generation** - jsPDF + html2canvas instead of @react-pdf/renderer
+
+### Development Commands
+```bash
+npm run dev          # Start Vite dev server with Electron
+npm run build        # Build for production
+npm run electron:build:mac  # Build macOS installer
+npm run electron:build:win  # Build Windows installer
+```
+
+---
+
 ## Private Repository with Auto-Updates
 
 ### ✅ Yes, Private Repos Work!
@@ -32,10 +67,10 @@ For completely private releases (requires GitHub token):
    - Copy the token
 
 2. **Add token to your app:**
-   - Open `electron/main.js`
-   - Find the commented section around line 17
+   - Open `electron/main.ts`
+   - Find the commented section in the setupAutoUpdater function
    - Uncomment and add your token:
-   ```javascript
+   ```typescript
    autoUpdater.setFeedURL({
      provider: 'github',
      owner: 'blakejoy',
@@ -58,7 +93,7 @@ The database will **automatically initialize** when users install the app:
 1. **On First Launch:**
    - App detects no database exists
    - Creates all tables (students, forms, accommodations, etc.)
-   - Seeds 58 predefined accommodations
+   - Seeds 55 predefined accommodations
    - Ready to use!
 
 2. **Database Location:**
@@ -102,9 +137,9 @@ Student Accommodation Tracker.app
 ## Files That Are NOT Committed:
 
 - ❌ `*.db` - Database files
-- ❌ `/dist` - Build artifacts
+- ❌ `/dist-electron` - Electron build artifacts (main & preload)
+- ❌ `/dist-renderer` - Vite build artifacts (renderer)
 - ❌ `/node_modules` - Dependencies
-- ❌ `/.next` - Next.js build cache
 
 ---
 
@@ -120,11 +155,12 @@ Student Accommodation Tracker.app
 
 ### For Testing Database:
 
-- [ ] Delete any existing `sqlite.db` in project folder
-- [ ] Run `npm run electron:dev`
-- [ ] App should create fresh database
+- [ ] Delete any existing `sqlite.db` in Application Support folder
+- [ ] Run `npm run dev` to start the Vite dev server with Electron
+- [ ] App should create fresh database automatically
 - [ ] Check console for "✓ Database initialized successfully"
-- [ ] Browse to see 58 accommodations pre-loaded
+- [ ] Check console for "✓ Seeded 55 accommodations"
+- [ ] Browse to see 55 accommodations pre-loaded in forms
 
 ---
 

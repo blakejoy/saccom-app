@@ -301,20 +301,7 @@ function createWindow() {
 }
 
 app.whenReady().then(async () => {
-  // Initialize database (create tables and seed data on first run)
-  try {
-    const { initializeDatabase } = require('../src/lib/db/init.ts');
-    await initializeDatabase();
-  } catch (error) {
-    console.error('Failed to initialize database:', error);
-    // Show error dialog to user
-    const { dialog } = require('electron');
-    await dialog.showErrorBox(
-      'Database Error',
-      'Failed to initialize the database. The app may not function correctly.\n\n' + error.message
-    );
-  }
-
+  // Start Next.js server (database initialization happens via instrumentation.ts)
   await startNextServer();
   createMenu();
   createWindow();

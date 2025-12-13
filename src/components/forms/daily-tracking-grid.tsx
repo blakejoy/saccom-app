@@ -1,5 +1,3 @@
-'use client'
-
 import { useMobile } from '@/hooks/use-mobile'
 import { DailyTrackingCell } from './daily-tracking-cell'
 import { getShortDayName } from '@/lib/utils/date'
@@ -13,9 +11,10 @@ interface FormAccommodationWithDetails extends FormAccommodation {
 
 interface DailyTrackingGridProps {
   formAccommodations: FormAccommodationWithDetails[]
+  formId: number
 }
 
-export function DailyTrackingGrid({ formAccommodations }: DailyTrackingGridProps) {
+export function DailyTrackingGrid({ formAccommodations, formId }: DailyTrackingGridProps) {
   const isMobile = useMobile()
 
   if (isMobile) {
@@ -39,6 +38,7 @@ export function DailyTrackingGrid({ formAccommodations }: DailyTrackingGridProps
                       <DailyTrackingCell
                         trackingId={tracking.id}
                         initialStatus={tracking.status}
+                        formId={formId}
                       />
                     )}
                   </div>
@@ -82,6 +82,7 @@ export function DailyTrackingGrid({ formAccommodations }: DailyTrackingGridProps
                       <DailyTrackingCell
                         trackingId={tracking.id}
                         initialStatus={tracking.status}
+                        formId={formId}
                       />
                     )}
                   </td>

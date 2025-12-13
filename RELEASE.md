@@ -2,6 +2,8 @@
 
 This document explains how to create new releases and how the auto-update system works.
 
+> **Note:** This app uses Vite + React with Electron. The build process compiles TypeScript and bundles the renderer using Vite, while Electron main and preload scripts are built separately.
+
 ## How Auto-Updates Work
 
 Your desktop app uses **electron-updater** with **GitHub Releases** as the update server:
@@ -119,7 +121,9 @@ To test the update mechanism:
 ### Build Fails
 - Check the GitHub Actions logs for errors
 - Ensure all dependencies are in `package.json`
-- Verify `better-sqlite3` rebuilds correctly
+- Verify `better-sqlite3` rebuilds correctly for Electron's Node version
+- Check that TypeScript compiles without errors: `npx tsc --noEmit`
+- Ensure Vite build succeeds: `npm run build`
 
 ### Updates Not Detected
 - Verify the release is published (not draft) on GitHub
