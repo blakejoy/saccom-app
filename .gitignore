@@ -50,5 +50,5 @@ next-env.d.ts
 *.AppImage
 
 /dist*
-/dist-electron
-/dist-renderer
+dist-electron/*
+dist-renderer/*

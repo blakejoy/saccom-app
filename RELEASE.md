@@ -62,11 +62,13 @@ Once you push the tag, GitHub Actions will automatically:
 
 1. ✅ Build installers for macOS (DMG + ZIP)
 2. ✅ Build installers for Windows (NSIS + Portable)
-3. ✅ Create a GitHub Release with the tag
-4. ✅ Upload all installers to the release
+3. ✅ Create a GitHub Release with the tag (via electron-builder)
+4. ✅ Upload all installers to the release (via electron-builder)
 5. ✅ Publish the release (making it available for auto-updates)
 
 **Build time:** Approximately 10-15 minutes
+
+> **Note:** electron-builder handles the entire release process automatically. It creates the GitHub release, uploads all build artifacts (.dmg, .zip, .exe), and publishes it. You don't need to manually create releases on GitHub.
 
 ### Step 5: Monitor the Build
 
