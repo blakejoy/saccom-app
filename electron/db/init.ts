@@ -10,13 +10,16 @@ export async function initializeDatabase() {
     console.log('Initializing database...')
 
     // Check if database has tables
+    console.log('Checking for existing tables...')
     const tables = sqlite
       .prepare(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='accommodations'"
       )
       .all()
 
+    console.log('Tables found:', tables.length)
     const isFirstRun = tables.length === 0
+    console.log('Is first run:', isFirstRun)
 
     if (isFirstRun) {
       console.log('First run detected - setting up database...')

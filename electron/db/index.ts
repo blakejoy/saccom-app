@@ -5,6 +5,7 @@ import path from 'path'
 import { app } from 'electron'
 
 // Database path in user data directory
+// NOTE: This module should only be imported after app.isReady()
 const dbPath = path.join(app.getPath('userData'), 'sqlite.db')
 console.log('Database path:', dbPath)
 

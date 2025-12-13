@@ -29,11 +29,11 @@ jobs:
             ### Installation
 
             **macOS:**
-            - Download `Student Accommodation Tracker-${{ github.ref_name }}-arm64.dmg`
+            - Download `student-accommodation-tracker-${{ github.ref_name }}-arm64.dmg`
             - **Important:** macOS may say the app is "damaged" - this is normal for unsigned apps
             - Open Terminal and run:
               ```bash
-              xattr -cr ~/Downloads/Student\ Accommodation\ Tracker-${{ github.ref_name }}-arm64.dmg
+              xattr -cr ~/Downloads/student-accommodation-tracker-${{ github.ref_name }}-arm64.dmg
               ```
             - Open the DMG and drag to Applications
             - If needed, also run:
@@ -43,7 +43,7 @@ jobs:
             - Right-click the app → Open (first time only)
 
             **Windows:**
-            - Download `Student Accommodation Tracker Setup ${{ github.ref_name }}.exe`
+            - Download `student-accommodation-tracker Setup ${{ github.ref_name }}.exe`
             - Run the installer
             - Click "More info" → "Run anyway" if SmartScreen appears
 
@@ -134,12 +134,12 @@ jobs:
             ## 📥 Downloads
 
             ### macOS
-            - [Student Accommodation Tracker-${tag}-arm64.dmg](https://github.com/${repo.owner}/${repo.repo}/releases/download/${tag}/Student%20Accommodation%20Tracker-${tag}-arm64.dmg) (Recommended)
-            - [Student Accommodation Tracker-${tag}-arm64-mac.zip](https://github.com/${repo.owner}/${repo.repo}/releases/download/${tag}/Student%20Accommodation%20Tracker-${tag}-arm64-mac.zip) (Portable)
+            - [student-accommodation-tracker-${tag}-arm64.dmg](https://github.com/${repo.owner}/${repo.repo}/releases/download/${tag}/student-accommodation-tracker-${tag}-arm64.dmg) (Recommended)
+            - [student-accommodation-tracker-${tag}-arm64-mac.zip](https://github.com/${repo.owner}/${repo.repo}/releases/download/${tag}/student-accommodation-tracker-${tag}-arm64-mac.zip) (Portable)
 
             ### Windows
-            - [Student Accommodation Tracker Setup ${tag}.exe](https://github.com/${repo.owner}/${repo.repo}/releases/download/${tag}/Student%20Accommodation%20Tracker%20Setup%20${tag}.exe) (Recommended)
-            - [Student Accommodation Tracker ${tag}.exe](https://github.com/${repo.owner}/${repo.repo}/releases/download/${tag}/Student%20Accommodation%20Tracker%20${tag}.exe) (Portable)
+            - [student-accommodation-tracker Setup ${tag}.exe](https://github.com/${repo.owner}/${repo.repo}/releases/download/${tag}/student-accommodation-tracker%20Setup%20${tag}.exe) (Recommended)
+            - [student-accommodation-tracker ${tag}.exe](https://github.com/${repo.owner}/${repo.repo}/releases/download/${tag}/student-accommodation-tracker%20${tag}.exe) (Portable)
             `;
 
             // Update release body

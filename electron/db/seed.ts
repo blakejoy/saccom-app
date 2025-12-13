@@ -73,7 +73,7 @@ async function seed() {
         sortOrder: idx,
         isActive: true,
       }))
-    ).run()
+    ).onConflictDoNothing().run()
 
     console.log(`✓ Seeded ${uniqueAccommodations.length} accommodations`)
     console.log('Seed completed successfully!')

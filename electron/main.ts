@@ -1,11 +1,28 @@
 import { app, BrowserWindow, Menu, dialog, BrowserWindowConstructorOptions } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import path from 'path'
-import { initializeDatabase } from './db/init'
-import { registerIpcHandlers } from './ipc/handlers'
+// NOTE: Database and IPC handlers are dynamically imported after app.isReady()
+// to avoid calling app.getPath() before the app is ready
 
 const isDev = process.env.NODE_ENV === 'development'
 let mainWindow: BrowserWindow | null = null
+
+// Catch any uncaught errors and show them in a dialog
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error)
+  dialog.showErrorBox(
+    'Application Error',
+    `An unexpected error occurred:\n\n${error.message}\n\nStack:\n${error.stack}`
+  )
+})
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection:', reason)
+  dialog.showErrorBox(
+    'Promise Rejection',
+    `An unhandled promise rejection occurred:\n\n${reason}`
+  )
+})
 
 // Configure auto-updater
 autoUpdater.autoDownload = false
@@ -28,11 +45,15 @@ function setupAutoUpdater() {
   }
 
   setTimeout(() => {
-    autoUpdater.checkForUpdates()
+    autoUpdater.checkForUpdates().catch((error) => {
+      console.log('Update check failed (this is normal for dev/private repos):', error.message)
+    })
   }, 3000)
 
   setInterval(() => {
-    autoUpdater.checkForUpdates()
+    autoUpdater.checkForUpdates().catch((error) => {
+      console.log('Update check failed:', error.message)
+    })
   }, 4 * 60 * 60 * 1000)
 
   autoUpdater.on('checking-for-update', () => {
@@ -99,7 +120,7 @@ function setupAutoUpdater() {
 
 function createMenu() {
   // Note: Using hash router, so URLs are like /#/students/new
-  const baseURL = isDev ? 'http://localhost:5173' : `file://${path.join(__dirname, '../dist-renderer/index.html')}`
+  const baseURL = isDev ? 'http://localhost:5173' : `file://${path.join(__dirname, '../../dist-renderer/index.html')}`
 
   const template: Electron.MenuItemConstructorOptions[] = [
     // App Menu (macOS only)
@@ -264,7 +285,7 @@ function createWindow() {
 
   const startURL = isDev
     ? 'http://localhost:5173'
-    : `file://${path.join(__dirname, '../dist-renderer/index.html')}`
+    : `file://${path.join(__dirname, '../../dist-renderer/index.html')}`
 
   mainWindow.loadURL(startURL)
 
@@ -283,32 +304,41 @@ function createWindow() {
 
 app.whenReady().then(async () => {
   try {
+    console.log('App ready, starting initialization...')
+
+    // Dynamically import database module AFTER app is ready
+    const { initializeDatabase } = await import('./db/init')
+
     // Initialize database BEFORE creating window
     await initializeDatabase()
     console.log('✓ Database initialized')
+
+    // Dynamically import and register IPC handlers
+    const { registerIpcHandlers } = await import('./ipc/handlers')
+    registerIpcHandlers()
+    console.log('✓ IPC handlers registered')
+
+    // Create window and menu
+    createMenu()
+    createWindow()
+    setupAutoUpdater()
+
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow()
+      }
+    })
+
+    console.log('✓ App startup complete')
   } catch (error) {
-    console.error('Database initialization failed:', error)
-    await dialog.showErrorBox(
-      'Database Error',
-      'Failed to initialize the database. The app will now quit.\n\n' + (error as Error).message
+    console.error('App initialization failed:', error)
+    dialog.showErrorBox(
+      'Initialization Error',
+      'Failed to initialize the app. The app will now quit.\n\n' + (error as Error).message
     )
     app.quit()
     return
   }
-
-  // Register IPC handlers
-  registerIpcHandlers()
-
-  // Create window and menu
-  createMenu()
-  createWindow()
-  setupAutoUpdater()
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
-    }
-  })
 })
 
 app.on('window-all-closed', () => {

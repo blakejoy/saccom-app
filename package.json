@@ -73,11 +73,11 @@
   "build": {
     "appId": "com.studentformapp",
     "productName": "student-accommodation-tracker",
+    "asar": true,
     "files": [
-      "dist-electron/**/*",
-      "dist-renderer/**/*",
-      "drizzle/**/*",
-      "node_modules/**/*",
+      "dist-electron",
+      "dist-renderer",
+      "drizzle",
       "package.json"
     ],
     "extraResources": [
@@ -90,7 +90,9 @@
       "node_modules/better-sqlite3/**/*"
     ],
     "directories": {
-      "buildResources": "assets"
+      "buildResources": "assets",
+      "app": ".",
+      "output": "dist"
     },
     "publish": {
       "provider": "github",

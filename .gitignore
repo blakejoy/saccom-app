@@ -48,3 +48,7 @@ next-env.d.ts
 *.exe
 *.zip
 *.AppImage
+
+/dist*
+/dist-electron
+/dist-renderer
