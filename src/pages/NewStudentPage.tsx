@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,8 @@ import {
 export default function NewStudentPage() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const [studentNumber, setStudentNumber] = useState('')
+  const [initials, setInitials] = useState('')
 
   const mutation = useMutation({
     mutationFn: (data: { studentNumber: string; initials: string }) =>
@@ -29,10 +32,9 @@ export default function NewStudentPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
     mutation.mutate({
-      studentNumber: formData.get('studentNumber') as string,
-      initials: formData.get('initials') as string,
+      studentNumber: studentNumber,
+      initials: initials,
     })
   }
 
@@ -60,6 +62,10 @@ export default function NewStudentPage() {
                 name="studentNumber"
                 type="text"
                 placeholder="e.g., 12345"
+                value={studentNumber}
+                onChange={(e) => setStudentNumber(e.target.value)}
+                onClear={() => setStudentNumber('')}
+                showClear
                 required
                 autoFocus
               />
@@ -72,6 +78,10 @@ export default function NewStudentPage() {
                 name="initials"
                 type="text"
                 placeholder="e.g., JD"
+                value={initials}
+                onChange={(e) => setInitials(e.target.value)}
+                onClear={() => setInitials('')}
+                showClear
                 maxLength={10}
                 required
               />

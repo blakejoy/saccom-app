@@ -17,12 +17,20 @@ export interface IpcChannels {
     response: Student
   }
   'students:getAll': {
-    request: { search?: string }
+    request: { search?: string; includeArchived?: boolean }
     response: Student[]
   }
   'students:getById': {
     request: { id: number }
     response: StudentWithRelations | null
+  }
+  'students:archive': {
+    request: { id: number }
+    response: void
+  }
+  'students:unarchive': {
+    request: { id: number }
+    response: void
   }
   'students:delete': {
     request: { id: number }
@@ -94,8 +102,32 @@ export interface IpcChannels {
 
   // ===== ACCOMMODATIONS =====
   'accommodations:getAll': {
-    request: void
+    request: { includeInactive?: boolean }
     response: Accommodation[]
+  }
+  'accommodations:create': {
+    request: { name: string; category?: string; sortOrder?: number }
+    response: Accommodation
+  }
+  'accommodations:update': {
+    request: { id: number; name?: string; category?: string; sortOrder?: number }
+    response: Accommodation
+  }
+  'accommodations:deactivate': {
+    request: { id: number }
+    response: void
+  }
+  'accommodations:delete': {
+    request: { id: number }
+    response: void
+  }
+  'accommodations:addToForm': {
+    request: { formId: number; accommodationId: number }
+    response: any
+  }
+  'accommodations:removeFromForm': {
+    request: { formAccommodationId: number }
+    response: void
   }
 
   // ===== WINDOW =====
