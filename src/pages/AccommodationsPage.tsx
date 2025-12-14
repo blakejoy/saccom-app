@@ -204,7 +204,7 @@ export default function AccommodationsPage() {
             </CardContent>
           </Card>
         ) : (
-          accommodations.map((accommodation) => (
+          accommodations.map((accommodation: Accommodation) => (
             <Card
               key={accommodation.id}
               className={!accommodation.isActive ? 'opacity-60 bg-muted/50' : ''}

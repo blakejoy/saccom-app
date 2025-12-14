@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 export function StudentSearch() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState(searchParams.get('search') || '')
-  const debounceTimer = useRef<number>()
+  const debounceTimer = useRef<number>(0);
   const isTyping = useRef(false)
 
   // Update local state if URL params change externally (but not while user is typing)

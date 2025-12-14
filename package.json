@@ -20,9 +20,11 @@
     "icons:generate": "node scripts/generate-icons.js",
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "vite",
-    "electron:build": "tsc && vite build && electron-builder",
-    "electron:build:mac": "tsc && vite build && electron-builder --mac",
-    "electron:build:win": "tsc && vite build && electron-builder --win"
+    "electron:build": "npm run build && electron-builder",
+    "electron:build:mac": "npm run build && electron-builder --mac --publish never",
+    "electron:build:mac:publish": "npm run build && electron-builder --mac --publish always",
+    "electron:build:win": "npm run build && electron-builder --win --publish never",
+    "electron:build:win:publish": "npm run build && electron-builder --win --publish always"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.12",
