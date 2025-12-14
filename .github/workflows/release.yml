@@ -25,6 +25,7 @@ jobs:
     steps:
       - name: Get tag name
         id: tag
+        shell: bash
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             TAG="${{ inputs.tag }}"
@@ -49,13 +50,13 @@ jobs:
         run: npm ci
 
       - name: Build and publish app (macOS)
-        if: matrix.os == 'macos-latest'
+        if: ${{ matrix.os == 'macos-latest' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run electron:build:mac -- --publish always
 
       - name: Build and publish app (Windows)
-        if: matrix.os == 'windows-latest'
+        if: ${{ matrix.os == 'windows-latest' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run electron:build:win -- --publish always
