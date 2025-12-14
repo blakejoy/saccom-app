@@ -7,7 +7,6 @@ export const students = sqliteTable('students', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   studentNumber: text('student_number').notNull().unique(),
   initials: text('initials').notNull(),
-  isArchived: integer('is_archived', { mode: 'boolean' }).notNull().default(false),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .$defaultFn(() => new Date())
     .notNull(),

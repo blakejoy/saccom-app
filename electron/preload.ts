@@ -28,10 +28,6 @@ const api = {
       ipcRenderer.invoke('students:getAll', params),
     getById: (params: IpcChannels['students:getById']['request']) =>
       ipcRenderer.invoke('students:getById', params),
-    archive: (params: IpcChannels['students:archive']['request']) =>
-      ipcRenderer.invoke('students:archive', params),
-    unarchive: (params: IpcChannels['students:unarchive']['request']) =>
-      ipcRenderer.invoke('students:unarchive', params),
     delete: (params: IpcChannels['students:delete']['request']) =>
       ipcRenderer.invoke('students:delete', params),
   },
@@ -70,20 +66,7 @@ const api = {
 
   // Accommodations
   accommodations: {
-    getAll: (params?: IpcChannels['accommodations:getAll']['request']) =>
-      ipcRenderer.invoke('accommodations:getAll', params || {}),
-    create: (data: IpcChannels['accommodations:create']['request']) =>
-      ipcRenderer.invoke('accommodations:create', data),
-    update: (params: IpcChannels['accommodations:update']['request']) =>
-      ipcRenderer.invoke('accommodations:update', params),
-    deactivate: (params: IpcChannels['accommodations:deactivate']['request']) =>
-      ipcRenderer.invoke('accommodations:deactivate', params),
-    delete: (params: IpcChannels['accommodations:delete']['request']) =>
-      ipcRenderer.invoke('accommodations:delete', params),
-    addToForm: (params: IpcChannels['accommodations:addToForm']['request']) =>
-      ipcRenderer.invoke('accommodations:addToForm', params),
-    removeFromForm: (params: IpcChannels['accommodations:removeFromForm']['request']) =>
-      ipcRenderer.invoke('accommodations:removeFromForm', params),
+    getAll: () => ipcRenderer.invoke('accommodations:getAll', undefined),
   },
 
   // Window management

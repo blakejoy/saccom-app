@@ -287,23 +287,6 @@ function createWindow() {
     ? 'http://localhost:5173'
     : `file://${path.join(__dirname, '../../dist-renderer/index.html')}`
 
-  // Set Content Security Policy
-  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [
-          "default-src 'self'; " +
-          "script-src 'self' 'unsafe-inline'; " +
-          "style-src 'self' 'unsafe-inline'; " +
-          "img-src 'self' data: blob:; " +
-          "font-src 'self' data:; " +
-          "connect-src 'self'"
-        ]
-      }
-    })
-  })
-
   mainWindow.loadURL(startURL)
 
   mainWindow.once('ready-to-show', () => {

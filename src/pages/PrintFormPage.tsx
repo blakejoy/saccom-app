@@ -9,7 +9,6 @@ import type { FormAccommodation, DailyTracking } from '@/lib/db/schema'
 export default function PrintFormPage() {
   const { formId } = useParams<{ formId: string }>()
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false)
-  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('landscape')
 
   const { data: form, isLoading, error } = useQuery({
     queryKey: ['form', parseInt(formId!)],
@@ -32,8 +31,7 @@ export default function PrintFormPage() {
       if (!printElement) throw new Error('Print content not found')
       await generatePdfFromElement(
         printElement,
-        `${form!.student.initials}-Week${form!.weekNumber}-${form!.year}.pdf`,
-        orientation
+        `${form!.student.initials}-Week${form!.weekNumber}-${form!.year}.pdf`
       )
     } catch (error) {
       alert('Failed to generate PDF')
@@ -79,41 +77,20 @@ export default function PrintFormPage() {
   return (
     <div>
       {/* Print Controls - Hidden when printing */}
-      <div className="no-print fixed top-4 right-4 bg-white p-4 rounded-lg shadow-lg z-50">
-        <div className="mb-3">
-          <p className="text-sm font-semibold mb-2">Orientation:</p>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant={orientation === 'landscape' ? 'default' : 'outline'}
-              onClick={() => setOrientation('landscape')}
-            >
-              Landscape
-            </Button>
-            <Button
-              size="sm"
-              variant={orientation === 'portrait' ? 'default' : 'outline'}
-              onClick={() => setOrientation('portrait')}
-            >
-              Portrait
-            </Button>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Button onClick={handlePrint} variant="default">
-            Print
-          </Button>
-          <Button
-            onClick={handleDownloadPdf}
-            variant="outline"
-            disabled={isGeneratingPdf}
-          >
-            {isGeneratingPdf ? 'Generating PDF...' : 'Download PDF'}
-          </Button>
-          <Button onClick={() => window.close()} variant="ghost">
-            Close
-          </Button>
-        </div>
+      <div className="no-print fixed top-4 right-4 flex gap-2 bg-white p-4 rounded-lg shadow-lg z-50">
+        <Button onClick={handlePrint} variant="default">
+          Print
+        </Button>
+        <Button
+          onClick={handleDownloadPdf}
+          variant="outline"
+          disabled={isGeneratingPdf}
+        >
+          {isGeneratingPdf ? 'Generating PDF...' : 'Download PDF'}
+        </Button>
+        <Button onClick={() => window.close()} variant="ghost">
+          Close
+        </Button>
       </div>
 
       {/* Printable Content */}
@@ -238,11 +215,6 @@ export default function PrintFormPage() {
         @media print {
           .no-print {
             display: none !important;
-          }
-
-          @page {
-            size: A4 ${orientation};
-            margin: 15mm;
           }
 
           body {
