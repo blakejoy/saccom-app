@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
 import { StudentCard } from '@/components/students/student-card'
 import { StudentSearch } from '@/components/students/student-search'
@@ -9,26 +8,11 @@ import type { Student } from '@/lib/db/schema'
 export default function HomePage() {
   const [searchParams] = useSearchParams()
   const search = searchParams.get('search') || undefined
-  const [showArchived, setShowArchived] = useState(false)
-  const queryClient = useQueryClient()
 
   const { data: students = [], isLoading } = useQuery({
-    queryKey: ['students', search, showArchived],
-    queryFn: () => window.electronAPI.students.getAll({ search, includeArchived: showArchived }),
+    queryKey: ['students', search],
+    queryFn: () => window.electronAPI.students.getAll({ search }),
   })
-
-  const unarchiveMutation = useMutation({
-    mutationFn: (id: number) => window.electronAPI.students.unarchive({ id }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['students'] })
-    },
-  })
-
-  const handleUnarchive = (student: Student) => {
-    if (window.confirm(`Restore ${student.initials} from archive?`)) {
-      unarchiveMutation.mutate(student.id)
-    }
-  }
 
   if (isLoading) {
     return (
@@ -51,32 +35,15 @@ export default function HomePage() {
               Manage student accommodations and track daily progress
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <Link to="/accommodations">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Manage Accommodations
-              </Button>
-            </Link>
-            <Link to="/students/new">
-              <Button size="lg" className="w-full sm:w-auto">
-                Add Student
-              </Button>
-            </Link>
-          </div>
+          <Link to="/students/new">
+            <Button size="lg" className="w-full sm:w-auto">
+              Add Student
+            </Button>
+          </Link>
         </div>
 
-        {/* Search and Filters */}
-        <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-          <div className="flex-1">
-            <StudentSearch />
-          </div>
-          <Button
-            variant="outline"
-            onClick={() => setShowArchived(!showArchived)}
-          >
-            {showArchived ? 'Hide Archived' : 'Show Archived'}
-          </Button>
-        </div>
+        {/* Search */}
+        <StudentSearch />
 
         {/* Student Grid */}
         {students.length === 0 ? (
@@ -90,11 +57,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {students.map((student: Student) => (
-              <StudentCard
-                key={student.id}
-                student={student}
-                onUnarchive={showArchived ? handleUnarchive : undefined}
-              />
+              <StudentCard key={student.id} student={student} />
             ))}
           </div>
         )}
