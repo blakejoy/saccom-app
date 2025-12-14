@@ -19,9 +19,11 @@ import StudentDetailPage from './pages/StudentDetailPage'
 import NewFormPage from './pages/NewFormPage'
 import FormDetailPage from './pages/FormDetailPage'
 import PrintFormPage from './pages/PrintFormPage'
+import AccommodationsPage from './pages/AccommodationsPage'
 
 const router = createHashRouter([
   { path: '/', element: <HomePage /> },
+  { path: '/accommodations', element: <AccommodationsPage /> },
   { path: '/students/new', element: <NewStudentPage /> },
   { path: '/students/:studentId', element: <StudentDetailPage /> },
   { path: '/students/:studentId/forms/new', element: <NewFormPage /> },

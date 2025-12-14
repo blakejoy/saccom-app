@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { useParams, Link } from 'react-router-dom'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -10,15 +10,34 @@ import {
 } from '@/components/ui/card'
 import { formatWeekRange, getMondayOfWeek } from '@/lib/utils/date'
 import type { Form } from '@/lib/db/schema'
+import { Archive } from 'lucide-react'
 
 export default function StudentDetailPage() {
   const { studentId } = useParams<{ studentId: string }>()
   const id = parseInt(studentId!)
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const { data: student, isLoading } = useQuery({
     queryKey: ['student', id],
     queryFn: () => window.electronAPI.students.getById({ id }),
   })
+
+  const archiveMutation = useMutation({
+    mutationFn: () => window.electronAPI.students.archive({ id }),
+    onSuccess: () => {
+      // Invalidate students list
+      queryClient.invalidateQueries({ queryKey: ['students'] })
+      // Navigate back to home
+      navigate('/')
+    },
+  })
+
+  const handleArchive = () => {
+    if (window.confirm(`Are you sure you want to archive student ${student?.initials}? They will be hidden from the main list but can be restored later.`)) {
+      archiveMutation.mutate()
+    }
+  }
 
   if (isLoading) {
     return (
@@ -57,11 +76,23 @@ export default function StudentDetailPage() {
           <h1 className="text-3xl sm:text-4xl font-bold">{student.initials}</h1>
           <p className="mt-1 text-muted-foreground">Student #{student.studentNumber}</p>
         </div>
-        <Link to={`/students/${student.id}/forms/new`}>
-          <Button size="lg" className="w-full sm:w-auto">
-            Create New Form
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={handleArchive}
+            disabled={archiveMutation.isPending}
+            className="w-full sm:w-auto"
+          >
+            <Archive className="mr-2 h-4 w-4" />
+            {archiveMutation.isPending ? 'Archiving...' : 'Archive Student'}
           </Button>
-        </Link>
+          <Link to={`/students/${student.id}/forms/new`}>
+            <Button size="lg" className="w-full sm:w-auto">
+              Create New Form
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Forms List */}

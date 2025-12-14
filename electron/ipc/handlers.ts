@@ -17,6 +17,8 @@ export function registerIpcHandlers() {
   ipcMain.handle('students:create', studentHandlers.createStudent)
   ipcMain.handle('students:getAll', studentHandlers.getStudents)
   ipcMain.handle('students:getById', studentHandlers.getStudentById)
+  ipcMain.handle('students:archive', studentHandlers.archiveStudent)
+  ipcMain.handle('students:unarchive', studentHandlers.unarchiveStudent)
   ipcMain.handle('students:delete', studentHandlers.deleteStudent)
 
   // ===== FORMS =====
@@ -37,6 +39,12 @@ export function registerIpcHandlers() {
 
   // ===== ACCOMMODATIONS =====
   ipcMain.handle('accommodations:getAll', accommodationHandlers.getAllAccommodations)
+  ipcMain.handle('accommodations:create', accommodationHandlers.createAccommodation)
+  ipcMain.handle('accommodations:update', accommodationHandlers.updateAccommodation)
+  ipcMain.handle('accommodations:deactivate', accommodationHandlers.deactivateAccommodation)
+  ipcMain.handle('accommodations:delete', accommodationHandlers.deleteAccommodation)
+  ipcMain.handle('accommodations:addToForm', accommodationHandlers.addAccommodationToForm)
+  ipcMain.handle('accommodations:removeFromForm', accommodationHandlers.removeAccommodationFromForm)
 
   // ===== WINDOW =====
   ipcMain.handle('window:open', windowHandlers.openWindow)

@@ -5,10 +5,12 @@ import html2canvas from 'html2canvas'
  * Generate a PDF from an HTML element
  * @param element - The HTML element to convert to PDF
  * @param filename - The name of the PDF file to download
+ * @param orientation - PDF orientation: 'portrait', 'landscape', or 'auto' (default)
  */
 export async function generatePdfFromElement(
   element: HTMLElement,
-  filename: string
+  filename: string,
+  orientation: 'portrait' | 'landscape' | 'auto' = 'auto'
 ): Promise<void> {
   try {
     // Capture the element as a canvas
@@ -21,12 +23,20 @@ export async function generatePdfFromElement(
 
     // Get canvas dimensions
     const imgData = canvas.toDataURL('image/png')
-    const imgWidth = 297 // A4 width in mm (landscape)
+    const imgWidth = orientation === 'portrait' ? 210 : 297 // A4 width in mm
     const imgHeight = (canvas.height * imgWidth) / canvas.width
 
-    // Create PDF in landscape mode to fit wide tables
+    // Determine final orientation
+    let finalOrientation: 'portrait' | 'landscape'
+    if (orientation === 'auto') {
+      finalOrientation = imgHeight > imgWidth ? 'portrait' : 'landscape'
+    } else {
+      finalOrientation = orientation
+    }
+
+    // Create PDF
     const pdf = new jsPDF({
-      orientation: imgHeight > imgWidth ? 'portrait' : 'landscape',
+      orientation: finalOrientation,
       unit: 'mm',
       format: 'a4',
     })
