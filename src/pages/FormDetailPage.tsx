@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { formatWeekRange, getMondayOfWeek } from '@/lib/utils/date'
 import { DailyTrackingGrid } from '@/components/forms/daily-tracking-grid'
 import { DeleteFormButton } from '@/components/forms/delete-form-button'
+import { ManageFormAccommodations } from '@/components/forms/manage-form-accommodations'
 
 export default function FormDetailPage() {
   const { studentId, formId } = useParams<{ studentId: string; formId: string }>()
@@ -124,6 +125,14 @@ export default function FormDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Manage Accommodations */}
+      {!form.isSas && (
+        <ManageFormAccommodations
+          formId={form.id}
+          currentAccommodations={form.formAccommodations}
+        />
+      )}
 
       {/* Daily Tracking */}
       {form.isSas ? (

@@ -1,7 +1,7 @@
 import type { IpcMainInvokeEvent } from 'electron'
 import { db } from '../../db'
 import { students } from '../../db/schema'
-import { eq, like, or } from 'drizzle-orm'
+import { eq, like, or, and } from 'drizzle-orm'
 
 /**
  * IPC Handler: Create a new student
@@ -27,19 +27,27 @@ export async function createStudent(
  */
 export async function getStudents(
   event: IpcMainInvokeEvent,
-  params: { search?: string }
+  params: { search?: string; includeArchived?: boolean }
 ) {
+  const conditions = []
+
+  // By default, exclude archived students
+  if (!params.includeArchived) {
+    conditions.push(eq(students.isArchived, false))
+  }
+
+  // Add search conditions
   if (params.search) {
-    return await db.query.students.findMany({
-      where: or(
+    conditions.push(
+      or(
         like(students.studentNumber, `%${params.search}%`),
         like(students.initials, `%${params.search}%`)
-      ),
-      orderBy: (students, { desc }) => [desc(students.createdAt)],
-    })
+      )
+    )
   }
 
   return await db.query.students.findMany({
+    where: conditions.length > 0 ? (conditions.length === 1 ? conditions[0] : and(...conditions)) : undefined,
     orderBy: (students, { desc }) => [desc(students.createdAt)],
   })
 }
@@ -64,7 +72,31 @@ export async function getStudentById(
 }
 
 /**
- * IPC Handler: Delete student
+ * IPC Handler: Archive student (soft delete)
+ */
+export async function archiveStudent(
+  event: IpcMainInvokeEvent,
+  params: { id: number }
+) {
+  await db.update(students)
+    .set({ isArchived: true })
+    .where(eq(students.id, params.id))
+}
+
+/**
+ * IPC Handler: Unarchive student (restore)
+ */
+export async function unarchiveStudent(
+  event: IpcMainInvokeEvent,
+  params: { id: number }
+) {
+  await db.update(students)
+    .set({ isArchived: false })
+    .where(eq(students.id, params.id))
+}
+
+/**
+ * IPC Handler: Delete student (hard delete - use with caution)
  */
 export async function deleteStudent(
   event: IpcMainInvokeEvent,
